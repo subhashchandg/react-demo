@@ -1,16 +1,27 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
+import Post from './post';
 
-const App = props=>{
+const App = (props) => {
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then((response) => response.json())
+      .then((json) => setPosts(json));
+  }, []);
 
-    const handleClick = ()=>{
-        console.log("I work");
-    }
-    return (
+  const deletePost = (id) => {
+    setPosts(posts.filter((el) => el.id !== id));
+  };
+  return (
+    <Fragment>
+      <h1>Hello World!!!!</h1>
+      {posts.map((el) => (
         <Fragment>
-            <h1>Hello World!!!!</h1>
-            <button onClick={handleClick}> Hit Me !!!</button>
+          <Post post={el} deletePost={deletePost} />
         </Fragment>
-    )
-}
+      ))}
+    </Fragment>
+  );
+};
 
 export default App;
